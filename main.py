@@ -53,26 +53,35 @@ while True:
 
     print(f"You selected: {operations[choice]}")
 
-    #Exiting Calculator:
-    if choice == "18":
-        print("Exiting calculator. Bye!")
-        break
-    
-    #Showing History:
-    elif choice == "16":
-        print("Showing History:")
-        if not history:
-            print("No history yet.")
-        else:
-            for item in history:
-                print(item)
+    #Add, Sub, Mul, Div:
+    if choice in ["1", "2", "3", "4"]:
+        try:
+            num1 = float(input("Enter first number: ").strip())
+            num2 = float(input("Enter second number: ").strip())
 
-    #Clearing History:
-    elif choice == "17":
-        print("Clearing History...")
-        history.clear()
-        clear_file()
-        print("History Cleared!")
+            if choice == "1":
+                result = num1 + num2
+                operation = f"{num1} + {num2} = {result}"
+            elif choice == "2":
+                result = num1 - num2
+                operation = f"{num1} - {num2} = {result}"
+            elif choice == "3":
+                result = num1 * num2
+                operation = f"{num1} * {num2} = {result}"
+            elif choice == "4":
+                if num2 == 0:
+                    operation = "Error: Cannot divide by zero."
+                else:
+                    result = num1 / num2
+                    operation = f"{num1} / {num2} = {result}"
+
+            print("Result:", operation)
+            history.append(operation)
+            save_to_file(operation)
+
+        except ValueError:
+            print("Invalid input. Please enter valid numbers.")
+
 
     #Square:
     elif choice == "5":
@@ -97,7 +106,7 @@ while True:
             num = float(input("Enter a number: ").strip())
         except ValueError:
             print("Invalid input. Please enter a valid number.")
-            continue        #Only skip if there was a problem
+            continue        #Only skip if there's a issue
 
         #This part only runs if no exception was raised
         result = num ** 0.5
@@ -183,31 +192,66 @@ while True:
         except ValueError:
             print("Invalid input. Please enter a valid number.")
 
-    #Add, Sub, Mul, Div:
-    elif choice in ["1", "2", "3", "4"]:
+
+    # Cosecant, Secant, Cotangent (1/sin, 1/cos, 1/tan):
+    elif choice in ["13", "14", "15"]:
         try:
-            num1 = float(input("Enter first number: ").strip())
-            num2 = float(input("Enter second number: ").strip())
+            degree = float(input("Enter angle in degrees: ").strip())  #taking angle input
+            radian = math.radians(degree)  #converting to radians because math functions use radians
 
-            if choice == "1":
-                result = num1 + num2
-                operation = f"{num1} + {num2} = {result}"
-            elif choice == "2":
-                result = num1 - num2
-                operation = f"{num1} - {num2} = {result}"
-            elif choice == "3":
-                result = num1 * num2
-                operation = f"{num1} * {num2} = {result}"
-            elif choice == "4":
-                if num2 == 0:
-                    operation = "Error: Cannot divide by zero."
+            if choice == "13":  #Cosecant
+                sin_val = math.sin(radian)
+                if sin_val == 0:
+                    print("Error: Cosecant undefined (division by zero).")
                 else:
-                    result = num1 / num2
-                    operation = f"{num1} / {num2} = {result}"
+                    result = 1 / sin_val
+                    operation = f"cosec({degree}°) = {result}"
+                    print("Result:", operation)
+                    history.append(operation)
+                    save_to_file(operation)
 
-            print("Result:", operation)
-            history.append(operation)
-            save_to_file(operation)
+            elif choice == "14":  #Secant
+                cos_val = math.cos(radian)
+                if cos_val == 0:
+                    print("Error: Secant undefined (division by zero).")
+                else:
+                    result = 1 / cos_val
+                    operation = f"sec({degree}°) = {result}"
+                    print("Result:", operation)
+                    history.append(operation)
+                    save_to_file(operation)
+
+            elif choice == "15":  #Cotangent
+                tan_val = math.tan(radian)
+                if tan_val == 0:
+                    print("Error: Cotangent undefined (division by zero).")
+                else:
+                    result = 1 / tan_val
+                    operation = f"cot({degree}°) = {result}"
+                    print("Result:", operation)
+                    history.append(operation)
+                    save_to_file(operation)
 
         except ValueError:
-            print("Invalid input. Please enter valid numbers.")
+            print("Invalid input. Please enter a valid number.")
+
+    #Exiting Calculator:
+    if choice == "18":
+        print("Exiting calculator. Bye!")
+        break
+    
+    #Showing History:
+    elif choice == "16":
+        print("Showing History:")
+        if not history:
+            print("No history yet.")
+        else:
+            for item in history:
+                print(item)
+
+    #Clearing History:
+    elif choice == "17":
+        print("Clearing History...")
+        history.clear()
+        clear_file()
+        print("History Cleared!")
